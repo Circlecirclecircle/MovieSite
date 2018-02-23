@@ -1,3 +1,5 @@
+using System;
+
 namespace MovieSite.Models
 {
     public class Movie
@@ -9,5 +11,7 @@ namespace MovieSite.Models
         public string DownloadLink { get; set; }
 
         public string ImageLink { get; set; }
+
+        public DateTime CreateTime { get; set; } 
     }
 }
