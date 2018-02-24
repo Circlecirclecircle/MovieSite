@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieSite.Models;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MovieSite.Controllers
 {
@@ -51,7 +52,14 @@ namespace MovieSite.Controllers
 
             //https://docs.microsoft.com/en-us/aspnet/core/data/ef-mvc/crud
 
-            return null;
+            if(await TryUpdateModelAsync<Movie>(movie,"",a=>a.Name,a=>a.ImageLink,a=>a.DownloadLink))
+            {
+                await _dbContext.SaveChangesAsync();
+
+                return Json(new OperationResultViewModel{Result=true});
+            }
+
+            return Json(new OperationResultViewModel{Result=false});
         }
 
         public IActionResult DelteMovie()
