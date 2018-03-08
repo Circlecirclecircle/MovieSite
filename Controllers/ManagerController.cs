@@ -48,7 +48,7 @@ namespace MovieSite.Controllers
 
         public async Task<IActionResult> EditMovie(int? id)
         {
-            var movie=_dbContext.Movies.SingleOrDefault();
+            var movie=_dbContext.Movies.SingleOrDefault(a=>a.Id==id.Value);
 
             //https://docs.microsoft.com/en-us/aspnet/core/data/ef-mvc/crud
 
@@ -62,9 +62,25 @@ namespace MovieSite.Controllers
             return Json(new OperationResultViewModel{Result=false});
         }
 
-        public IActionResult DelteMovie()
+        public IActionResult DelteMovie(int? id)
         {
-            return null;
+            if(id==null)
+            {
+                return NotFound();
+            }
+
+            var movie=_dbContext.Movies.FirstOrDefault(a=>a.Id==id.Value);
+
+            if(movie==null)
+            {
+                return NotFound();
+            }
+
+            _dbContext.Movies.Remove(movie);
+
+            _dbContext.SaveChanges();
+
+            return Json(new OperationResultViewModel{Result=false});
         }
     }
 }
